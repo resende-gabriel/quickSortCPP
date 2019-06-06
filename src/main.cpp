@@ -47,15 +47,6 @@ int main(int paramsLen, char *params[]) {
 	}
 	cout << params[1] << " " << params[2] << " " << params[3] << " ";
 	prepareQuickSortTest(params[1], params[2], size, showValues);
-	// callQuickSort(paramsLen, params);
-	// int a[10] = {10, 3, 9, 4, 8, 2, 7, 6, 5, 1};
-	// iterativeQuickSort(a, 9);
-	// quickSort(0, 9, a);
-	// quickSort1stElem(0, 9, a);
-	// cout << endl;
-	// for(int i =0; i<10; i++) {
-	// 	cout << a[i] << " ";
-	// }
 	return 0;
 }
 
@@ -91,8 +82,6 @@ void callQuickSort(char *method, int *values, int size) {
 
 void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showValues) {
 	int *values = new int[size+1];
-		cout << *values << endl;
-		cout << values[0] << endl;
 	double times[20];
 	stringstream testValues;
 	for(int i=0; i<20; i++) {
@@ -122,18 +111,20 @@ void getValues(int *values, char *orderType, int size) {
 		}
 		return;
 	}
+	int r = rand() % 1000 + size;
 	if(ORDC.compare(orderType) == 0) {
-		for(int i=0; i<size; i++) {
-			values[i] = i;
+		for(int i=0, v=r; i<size; i++, v++) {
+			values[i] = v;
 		}
 		return;
 	}
 	if(ORDD.compare(orderType) == 0) {
-		for(int i=size; i>=0; i--) {
-			values[i] = size-i;
+		for(int i=0, v=r; i<size; i++, v--) {
+			values[i] = v;
 		}
 		return;
 	}
+	values = nullptr;
 }
 
 void printValues(stringstream *ss, int *values, int length) {

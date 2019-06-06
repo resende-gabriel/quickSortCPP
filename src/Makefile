@@ -1,4 +1,4 @@
-ALL = tp
+ALL = tp2
 SRC = $(wildcard *.cpp */*.cpp)
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 

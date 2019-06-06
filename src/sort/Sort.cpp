@@ -117,8 +117,14 @@ void insertSort(int values[], int length) {
 		while(j >= 0  && aux < values[j]) {
 			values[j+1] = values[j];
 			j--;
+			comparisons++;
+			swaps++;
 		}
 		values[j+1] = aux;
+		if(j >= 0) {
+			comparisons++;
+		}
+		swaps++;
 	}
 }
 
