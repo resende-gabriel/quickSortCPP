@@ -1,6 +1,6 @@
-ALL = tp1
-SRC = $(wildcard *.cpp)
-OBJ = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+ALL = tp
+SRC = $(wildcard *.cpp */*.cpp)
+OBJ = $(patsubst %.cpp, %.o, $(SRC))
 
 CC = g++
 

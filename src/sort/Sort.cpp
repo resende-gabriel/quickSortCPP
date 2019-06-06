@@ -1,5 +1,5 @@
 #include "Sort.hpp"
-#include "..\stack\Stack.hpp"
+#include "../stack/Stack.hpp"
 
 unsigned long long comparisons = 0;
 unsigned long long swaps = 0;

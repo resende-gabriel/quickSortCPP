@@ -12,7 +12,7 @@ using std::stringstream;
 using namespace std::chrono;
 
 void callQuickSort(int paramsLen, char *params[]);
-int *getValues(char *orderType, int size);
+void getValues(int *values, char *orderType, int size);
 void printValues(stringstream *ss, int *values, int length);
 
 void prepareQuickSortTest(char *method, char *orderType, int size, bool showValues);
@@ -34,9 +34,9 @@ string ORDC = "OrdC";
 string ORDD = "OrdD";
 
 int main(int paramsLen, char *params[]) {
-	// if (paramsLen < 4) {
-	// 	return 0;
-	// }
+	if (paramsLen < 4) {
+		return 0;
+	}
 	bool showValues = false;
 	if(paramsLen > 4) {
 		showValues = true;
@@ -48,7 +48,7 @@ int main(int paramsLen, char *params[]) {
 	cout << params[1] << " " << params[2] << " " << params[3] << " ";
 	prepareQuickSortTest(params[1], params[2], size, showValues);
 	// callQuickSort(paramsLen, params);
-	int a[10] = {10, 3, 9, 4, 8, 2, 7, 6, 5, 1};
+	// int a[10] = {10, 3, 9, 4, 8, 2, 7, 6, 5, 1};
 	// iterativeQuickSort(a, 9);
 	// quickSort(0, 9, a);
 	// quickSort1stElem(0, 9, a);
@@ -90,23 +90,24 @@ void callQuickSort(char *method, int *values, int size) {
 }
 
 void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showValues) {
-	int *values;
+	int *values = new int[size+1];
+		cout << *values << endl;
+		cout << values[0] << endl;
 	double times[20];
 	stringstream testValues;
 	for(int i=0; i<20; i++) {
-		values = getValues(arrayOrder, size);
+		getValues(values, arrayOrder, size);
 		if(values == nullptr) {
 			return;
 		}
-		cout << "COMP " << comparisons << endl;
 		printValues(&testValues, values, size);
 		high_resolution_clock::time_point startTime = high_resolution_clock::now();
 		callQuickSort(method, values, size);
 		high_resolution_clock::time_point endTime = high_resolution_clock::now();
 		duration<double, std::micro> elapsedTime = duration_cast<duration<double>>(endTime - startTime);
 		times[i] = elapsedTime.count();
-		delete values;
 	}
+	delete[] values;
 	selectSort(times, 20);
 	cout << comparisons/20 << " " << swaps/20 << " " << (times[9]+times[10])/2 << endl;
 	if(showValues) {
@@ -114,27 +115,25 @@ void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showVal
 	}
 }
 
-int *getValues(char *orderType, int size) {
-	int *values = new int[size];
+void getValues(int *values, char *orderType, int size) {
 	if(ALE.compare(orderType) == 0) {
 		for(int i=0; i<size; i++) {
 			values[i] = rand();
 		}
-		return values;
+		return;
 	}
 	if(ORDC.compare(orderType) == 0) {
 		for(int i=0; i<size; i++) {
 			values[i] = i;
 		}
-		return values;
+		return;
 	}
 	if(ORDD.compare(orderType) == 0) {
 		for(int i=size; i>=0; i--) {
-			values[i] = i;
+			values[i] = size-i;
 		}
-		return values;
+		return;
 	}
-	return nullptr;
 }
 
 void printValues(stringstream *ss, int *values, int length) {

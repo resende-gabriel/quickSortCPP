@@ -31,8 +31,11 @@ class Stack {
 		};
 		~Stack<T>();
 		
+		// Retira o ultimo nodo da pilha, retornando seu conteudo
 		T Pop();
+		// Insere um novo nodo na pilha com o valor recebido
 		void Push(T val);
+		// Retorna o tamanho da pilha. 0 = vazia
 		int Length();
 
 	private:
