@@ -1,15 +1,12 @@
 #include "Sort.hpp"
 #include "../stack/Stack.hpp"
 
-unsigned int comparisons = 0;
-unsigned int swaps = 0;
+unsigned long long int comparisons = 0;
+unsigned long long int swaps = 0;
 
 void quickSort(int start, int end, int values[]) {
-	if(end <= start) {
-		return;
-	}
-	int i = start, j = end, m = ((start + end)/2);
-	split(start, end, &i, &j, values[m], values);
+	int i = start, j = end;
+	split(start, end, &i, &j, values[(start + end)/2], values);
 	if(j > start) {
 		quickSort(start, j, values);
 	}
@@ -43,7 +40,7 @@ void quickSort3Median(int start, int end, int values[]) {
 void quickSortInsert1(int start, int end, int values[], int length) {
 	int i = start, j = end;
 	if((end - start) <= length/100) {
-		insertSort(values, length);
+		insertSort(start, end, values);
 		return;
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
@@ -58,7 +55,7 @@ void quickSortInsert1(int start, int end, int values[], int length) {
 void quickSortInsert5(int start, int end, int values[], int length) {
 	int i = start, j = end;
 	if((end - start) <= length/20) {
-		insertSort(values, length);
+		insertSort(start, end, values);
 		return;
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
@@ -73,7 +70,7 @@ void quickSortInsert5(int start, int end, int values[], int length) {
 void quickSortInsert10(int start, int end, int values[], int length) {
 	int i = start, j = end;
 	if((end - start) <= length/10) {
-		insertSort(values, length);
+		insertSort(start, end, values);
 		return;
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
@@ -112,19 +109,19 @@ void iterativeQuickSort(int values[], int end) {
 	delete s;
 }
 
-void insertSort(int values[], int length) {
+void insertSort(int start, int end, int values[]) {
 	int aux, j;
-	for(int i = 1; i < length; i++) {
+	for(int i =(start + 1); i <= end; i++) {
 		aux = values[i];
 		j = i - 1;
-		while(j >= 0  && aux < values[j]) {
+		while(j >= start  && aux < values[j]) {
 			values[j+1] = values[j];
 			j--;
 			comparisons++;
 			swaps++;
 		}
 		values[j+1] = aux;
-		if(j >= 0) {
+		if(j >= start) {
 			comparisons++;
 		}
 		swaps++;
@@ -160,16 +157,16 @@ void split(int start, int end, int *i, int *j, int pivot, int values[]) {
 		}
 		comparisons+=2;
 		if((*i) == (*j)) {
-			(*j)--;
 			(*i)++;
+			(*j)--;
 			continue;
 		}
 		if((*i) < (*j)) {
 			aux = values[*i];
 			values[*i] = values[*j];
 			values[*j] = aux;
-			(*j)--;
 			(*i)++;
+			(*j)--;
 			swaps++;
 		}
 	}

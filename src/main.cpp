@@ -16,8 +16,8 @@ void getValues(int *values, char *orderType, int size);
 void printValues(stringstream *ss, int *values, int length);
 void prepareQuickSortTest(char *method, char *orderType, int size, bool showValues);
 
-extern unsigned int comparisons;
-extern unsigned int swaps;
+extern unsigned long long int comparisons;
+extern unsigned long long int swaps;
 
 string QC = "QC";
 string QM3 = "QM3";
@@ -35,14 +35,15 @@ int main(int paramsLen, char *params[]) {
 	if (paramsLen < 4) {
 		return 0;
 	}
-	bool showValues = false;
-	if(paramsLen > 4) {
-		showValues = true;
-	}
 	int size = atoi(params[3]);
 	if(size < 1) {
 		return 0;
 	}
+	bool showValues = false;
+	if(paramsLen > 4) {
+		showValues = true;
+	}
+	srand(time(0));
 	cout << params[1] << " " << params[2] << " " << params[3] << " ";
 	prepareQuickSortTest(params[1], params[2], size, showValues);
 	return 0;
@@ -52,7 +53,6 @@ void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showVal
 	int values[size];
 	double times[20];
 	stringstream testValues;
-	srand(time(NULL));
 	for(int i=0; i<20; i++) {
 		getValues(values, arrayOrder, size);
 		if(values == nullptr) {
