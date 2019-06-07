@@ -3,9 +3,6 @@
 
 #include<iostream>
 
-using std::cout;
-using std::endl;
-
 void quickSort(int start, int end, int values[]);
 void quickSort1stElem(int start, int end, int values[]);
 void quickSort3Median(int start, int end, int values[]);

@@ -1,14 +1,17 @@
 #include "Sort.hpp"
 #include "../stack/Stack.hpp"
 
-unsigned long long comparisons = 0;
-unsigned long long swaps = 0;
+unsigned int comparisons = 0;
+unsigned int swaps = 0;
 
 void quickSort(int start, int end, int values[]) {
-	int i = start, j = end;
-	split(start, end, &i, &j, values[(start + end)/2], values);
+	if(end <= start) {
+		return;
+	}
+	int i = start, j = end, m = ((start + end)/2);
+	split(start, end, &i, &j, values[m], values);
 	if(j > start) {
-		quickSort(start, j+1, values);
+		quickSort(start, j, values);
 	}
 	if(i < end) {
 		quickSort(i, end, values);
@@ -19,7 +22,7 @@ void quickSort1stElem(int start, int end, int values[]) {
 	int i = start, j = end;
 	split(start, end, &i, &j, values[start], values);
 	if(j > start) {
-		quickSort1stElem(start, j+1, values);
+		quickSort1stElem(start, j, values);
 	}
 	if(i < end) {
 		quickSort1stElem(i, end, values);
@@ -30,7 +33,7 @@ void quickSort3Median(int start, int end, int values[]) {
 	int i = start, j = end;
 	split(start, end, &i, &j, getMedian(start, end, values), values);
 	if(j > start) {
-		quickSort3Median(start, j+1, values);
+		quickSort3Median(start, j, values);
 	}
 	if(i < end) {
 		quickSort3Median(i, end, values);
@@ -45,7 +48,7 @@ void quickSortInsert1(int start, int end, int values[], int length) {
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
 	if(j > start) {
-		quickSortInsert1(start, j+1, values, length);
+		quickSortInsert1(start, j, values, length);
 	}
 	if(i < end) {
 		quickSortInsert1(i, end, values, length);
@@ -60,7 +63,7 @@ void quickSortInsert5(int start, int end, int values[], int length) {
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
 	if(j > start) {
-		quickSortInsert5(start, j+1, values, length);
+		quickSortInsert5(start, j, values, length);
 	}
 	if(i < end) {
 		quickSortInsert5(i, end, values, length);
@@ -75,7 +78,7 @@ void quickSortInsert10(int start, int end, int values[], int length) {
 	}
 	split(start, end, &i, &j, values[(start + end)/2], values);
 	if(j > start) {
-		quickSortInsert10(start, j+1, values, length);
+		quickSortInsert10(start, j, values, length);
 	}
 	if(i < end) {
 		quickSortInsert10(i, end, values, length);
@@ -131,9 +134,9 @@ void insertSort(int values[], int length) {
 void selectSort(double values[], int length) {
 	int min;
 	double aux;
-	for(int i=0; i < length - 1; i++) {
+	for(int i=0; i < (length - 1); i++) {
 		min = i;
-		for (int j = i + 1 ; j < length; j++) {
+		for (int j=(i + 1); j < length; j++) {
 			if(values[j] < values[min]) {
 				min = j;
 			}

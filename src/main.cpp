@@ -11,15 +11,13 @@ using std::stringstream;
 
 using namespace std::chrono;
 
-void callQuickSort(int paramsLen, char *params[]);
+double callQuickSort(char *method, int *values, int size);
 void getValues(int *values, char *orderType, int size);
 void printValues(stringstream *ss, int *values, int length);
-
 void prepareQuickSortTest(char *method, char *orderType, int size, bool showValues);
-void callQuickSort(char *method, int *values, int size);
 
-extern unsigned long long comparisons;
-extern unsigned long long swaps;
+extern unsigned int comparisons;
+extern unsigned int swaps;
 
 string QC = "QC";
 string QM3 = "QM3";
@@ -50,53 +48,19 @@ int main(int paramsLen, char *params[]) {
 	return 0;
 }
 
-void callQuickSort(char *method, int *values, int size) {
-	if(QC.compare(method) == 0) {
-		quickSort(0, size-1, values);
-		return;
-	}
-	if(QM3.compare(method) == 0) {
-		quickSort3Median(0, size-1, values);
-		return;
-	}
-	if(QPE.compare(method) == 0) {
-		quickSort1stElem(0, size-1, values);
-		return;
-	}
-	if(QI1.compare(method) == 0) {
-		quickSortInsert1(0, size-1, values, size);
-		return;
-	}
-	if(QI5.compare(method) == 0) {
-		quickSortInsert5(0, size-1, values, size);
-		return;
-	}
-	if(QI10.compare(method) == 0) {
-		quickSortInsert10(0, size-1, values, size);
-		return;
-	}
-	if(QNR.compare(method) == 0) {
-		iterativeQuickSort(values, size-1);
-	}
-}
-
 void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showValues) {
-	int *values = new int[size+1];
+	int values[size];
 	double times[20];
 	stringstream testValues;
+	srand(time(NULL));
 	for(int i=0; i<20; i++) {
 		getValues(values, arrayOrder, size);
 		if(values == nullptr) {
 			return;
 		}
 		printValues(&testValues, values, size);
-		high_resolution_clock::time_point startTime = high_resolution_clock::now();
-		callQuickSort(method, values, size);
-		high_resolution_clock::time_point endTime = high_resolution_clock::now();
-		duration<double, std::micro> elapsedTime = duration_cast<duration<double>>(endTime - startTime);
-		times[i] = elapsedTime.count();
+		times[i] = callQuickSort(method, values, size);
 	}
-	delete[] values;
 	selectSort(times, 20);
 	cout << comparisons/20 << " " << swaps/20 << " " << (times[9]+times[10])/2 << endl;
 	if(showValues) {
@@ -104,14 +68,42 @@ void prepareQuickSortTest(char *method, char *arrayOrder, int size, bool showVal
 	}
 }
 
+double callQuickSort(char *method, int *values, int size) {
+	auto startTime = high_resolution_clock::now();
+	if(QC.compare(method) == 0) {
+		quickSort(0, size-1, values);
+
+	} else if(QM3.compare(method) == 0) {
+		quickSort3Median(0, size-1, values);
+
+	} else if(QPE.compare(method) == 0) {
+		quickSort1stElem(0, size-1, values);
+
+	} else if(QI1.compare(method) == 0) {
+		quickSortInsert1(0, size-1, values, size);
+
+	} else if(QI5.compare(method) == 0) {
+		quickSortInsert5(0, size-1, values, size);
+
+	} else if(QI10.compare(method) == 0) {
+		quickSortInsert10(0, size-1, values, size);
+
+	} else if(QNR.compare(method) == 0) {
+		iterativeQuickSort(values, size-1);
+	}
+	auto endTime = high_resolution_clock::now();
+	auto elapsedTime = duration_cast<microseconds>(endTime - startTime);
+	return elapsedTime.count();
+}
+
 void getValues(int *values, char *orderType, int size) {
 	if(ALE.compare(orderType) == 0) {
 		for(int i=0; i<size; i++) {
-			values[i] = rand();
+			values[i] = rand() % size;
 		}
 		return;
 	}
-	int r = rand() % 1000 + size;
+	int r = rand() % size;
 	if(ORDC.compare(orderType) == 0) {
 		for(int i=0, v=r; i<size; i++, v++) {
 			values[i] = v;
