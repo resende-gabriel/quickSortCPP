@@ -124,7 +124,6 @@ void insertSort(int start, int end, int values[]) {
 		if(j >= start) {
 			comparisons++;
 		}
-		swaps++;
 	}
 }
 
