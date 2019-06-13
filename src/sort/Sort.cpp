@@ -69,7 +69,7 @@ void quickSortInsert5(int start, int end, int values[], int length) {
 
 void quickSortInsert10(int start, int end, int values[], int length) {
 	int i = start, j = end;
-	if((end - start) <= length/10) {
+	if((end - start) <= length/10 && start < end) {
 		insertSort(start, end, values);
 		return;
 	}
@@ -110,17 +110,16 @@ void iterativeQuickSort(int values[], int end) {
 }
 
 void insertSort(int start, int end, int values[]) {
-	int aux, j;
+	int j;
 	for(int i =(start + 1); i <= end; i++) {
-		aux = values[i];
 		j = i - 1;
-		while(j >= start  && aux < values[j]) {
+		while(j >= start && values[i] < values[j]) {
 			values[j+1] = values[j];
 			j--;
 			comparisons++;
 			swaps++;
 		}
-		values[j+1] = aux;
+		values[j+1] = values[i];
 		if(j >= start) {
 			comparisons++;
 		}
